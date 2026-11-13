@@ -8,6 +8,23 @@ def show_html(content: str) -> None:
     st.html(dedent(content).strip())
 
 
+def stock_label(left: int) -> str:
+    if left <= 0:
+        return "Out of stock"
+    if left <= 5:
+        return f"{left} left!"
+    return f"In stock: {left}"
+
+
+def show_stock(left: int, out_message: str = "Out of stock") -> None:
+    if left <= 0:
+        st.error(out_message)
+    elif left <= 5:
+        st.warning(stock_label(left))
+    else:
+        st.caption(stock_label(left))
+
+
 st.set_page_config(
     page_title="Collect Prints",
     page_icon="🖨️",
@@ -223,19 +240,19 @@ if "stock" not in st.session_state:
     st.session_state.stock = {
         "keycaps": 40,
         "commission": 5,
-        "ring_tiny": 10,
-        "ring_smallish": 10,
-        "ring_small": 10,
-        "ring_medium": 10,
-        "ring_big": 10,
+        "ring_tiny": 3,
+        "ring_smallish": 4,
+        "ring_small": 5,
+        "ring_medium": 6,
+        "ring_big": 8,
     }
 else:
     for key, qty in {
-        "ring_tiny": 10,
-        "ring_smallish": 10,
-        "ring_small": 10,
-        "ring_medium": 10,
-        "ring_big": 10,
+        "ring_tiny": 3,
+        "ring_smallish": 4,
+        "ring_small": 5,
+        "ring_medium": 6,
+        "ring_big": 8,
     }.items():
         st.session_state.stock.setdefault(key, qty)
 
@@ -287,10 +304,7 @@ if st.session_state.current_page == "next":
         </div>
         """
     )
-    if keycap_left > 0:
-        st.caption(f"In stock: {keycap_left}")
-    else:
-        st.error("Out of stock")
+    show_stock(keycap_left)
     if st.button(
         "Add keycap to cart",
         disabled=keycap_left <= 0,
@@ -298,9 +312,9 @@ if st.session_state.current_page == "next":
     ):
         st.session_state.cart.append(KEYCAP_ONE_SIZE)
         st.session_state.stock[KEYCAP_ONE_SIZE["id"]] -= 1
+        left_now = st.session_state.stock[KEYCAP_ONE_SIZE["id"]]
         st.success(
-            f"Added {KEYCAP_ONE_SIZE['name']} to cart "
-            f"({st.session_state.stock[KEYCAP_ONE_SIZE['id']]} left)"
+            f"Added {KEYCAP_ONE_SIZE['name']} to cart — {stock_label(left_now)}"
         )
         st.rerun()
 
@@ -310,7 +324,7 @@ if st.session_state.current_page == "next":
         left = st.session_state.stock.get(s["id"], 0)
         chips.append(
             f'<div class="size-chip {s["css"]}"><div class="label">{s["label"]}</div>'
-            f'<div class="meta">£{s["price"]:.2f} · {left}</div></div>'
+            f'<div class="meta">£{s["price"]:.2f} · {stock_label(left)}</div></div>'
         )
     show_html(f'<div class="size-ring">{"".join(chips)}</div>')
 
@@ -334,10 +348,7 @@ if st.session_state.current_page == "next":
         """
     )
 
-    if ring_left > 0:
-        st.caption(f"In stock: {ring_left}")
-    else:
-        st.error("Out of stock for this size")
+    show_stock(ring_left, out_message="Out of stock for this size")
 
     if st.button(
         f"Add {selected['label']} ring to cart",
@@ -352,10 +363,8 @@ if st.session_state.current_page == "next":
         }
         st.session_state.cart.append(item)
         st.session_state.stock[selected["id"]] -= 1
-        st.success(
-            f"Added {item['name']} to cart "
-            f"({st.session_state.stock[selected['id']]} left)"
-        )
+        left_now = st.session_state.stock[selected["id"]]
+        st.success(f"Added {item['name']} to cart — {stock_label(left_now)}")
         st.rerun()
 
     st.info("Cart and checkout are on the home page.")
@@ -429,7 +438,8 @@ products = [
         "id": "keycaps",
         "name": "Resin Keycaps",
         "price": 8.00,
-        "desc": "Custom resin keycaps. Tell me style/colour/legend in order notes.",
+        "desc": "Custom resin keycaps. Tell me style/colour/legend in order notes.
+        "You Would get 4 keycaps in the pack.",
     },
     {
         "id": "commission",
@@ -454,10 +464,7 @@ with shop_left:
             </div>
             """
         )
-        if left > 0:
-            st.caption(f"In stock: {left}")
-        else:
-            st.error("Out of stock")
+        show_stock(left)
         if st.button(
             f"Add to cart — {p['name']}",
             key=f"add_{p['id']}",
@@ -465,9 +472,8 @@ with shop_left:
         ):
             st.session_state.cart.append(p)
             st.session_state.stock[p["id"]] -= 1
-            st.success(
-                f"Added {p['name']} to cart ({st.session_state.stock[p['id']]} left)"
-            )
+            left_now = st.session_state.stock[p["id"]]
+            st.success(f"Added {p['name']} to cart — {stock_label(left_now)}")
             st.rerun()
 
 with shop_right:
