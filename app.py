@@ -148,7 +148,7 @@ st.markdown(
       <p class="cp-brand">Collect Prints</p>
       <p class="cp-sub">
         Custom resin keycaps and made-to-order commissions.
-        Built for makers who want detail — not paper crafts.
+        Built for makers who want detail — not FDM 3D prints For now.
       </p>
     </div>
     """,
