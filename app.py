@@ -1,4 +1,12 @@
+from textwrap import dedent
+
 import streamlit as st
+
+
+def show_html(content: str) -> None:
+    """Render HTML without Streamlit treating indented lines as code."""
+    st.html(dedent(content).strip())
+
 
 st.set_page_config(
     page_title="Collect Prints",
@@ -7,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-st.markdown(
+show_html(
     """
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -193,8 +201,7 @@ st.markdown(
       .size-chip .label { font-family: "Syne", sans-serif; font-size: 1.05rem; }
       .size-chip .meta { font-size: 0.9rem; font-weight: 600; color: #9a3412; margin-top: 0.25rem; }
     </style>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 if "users" not in st.session_state:
@@ -235,7 +242,7 @@ SPACEBAR_SIZES = [
 
 # --- Next page (spacebar sizes) ---
 if st.session_state.current_page == "next":
-    st.markdown(
+    show_html(
         """
         <div class="cp-hero">
           <div class="cp-tag">Next page</div>
@@ -244,8 +251,7 @@ if st.session_state.current_page == "next":
             Spacebar keycaps in five sizes — tiny, smallish, small, medium, big.
           </p>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     if st.button("← Back to home", key="back_home"):
@@ -256,25 +262,18 @@ if st.session_state.current_page == "next":
     for s in SPACEBAR_SIZES:
         left = st.session_state.stock.get(s["id"], 0)
         chips.append(
-            f"""
-            <div class="size-chip">
-              <div class="label">{s['label']}</div>
-              <div class="meta">£{s['price']:.2f} · {left} left</div>
-            </div>
-            """
+            f'<div class="size-chip"><div class="label">{s["label"]}</div>'
+            f'<div class="meta">£{s["price"]:.2f} · {left} left</div></div>'
         )
-    st.markdown(
-        f'<div class="size-ring">{"".join(chips)}</div>',
-        unsafe_allow_html=True,
-    )
+    show_html(f'<div class="size-ring">{"".join(chips)}</div>')
 
-    st.markdown('<p class="cp-section">Choose a size</p>', unsafe_allow_html=True)
+    show_html('<p class="cp-section">Choose a size</p>')
     size_labels = [s["label"] for s in SPACEBAR_SIZES]
     choice = st.radio("Size", size_labels, horizontal=True, key="spacebar_size_choice")
     selected = next(s for s in SPACEBAR_SIZES if s["label"] == choice)
     left = st.session_state.stock.get(selected["id"], 0)
 
-    st.markdown(
+    show_html(
         f"""
         <div class="cp-card">
           <h3 style="margin:0 0 0.35rem 0;">
@@ -286,8 +285,7 @@ if st.session_state.current_page == "next":
             Add colour/legend details in cart notes on the home page.
           </p>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     if left > 0:
@@ -315,18 +313,17 @@ if st.session_state.current_page == "next":
         st.rerun()
 
     st.info("Cart and checkout are on the home page.")
-    st.markdown(
+    show_html(
         """
         <div class="cp-footer">
           Copyright 2026 Collect Prints · Next page
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
     st.stop()
 
 # --- Home page ---
-st.markdown(
+show_html(
     """
     <div class="cp-hero">
       <div class="cp-tag">Resin shop</div>
@@ -336,21 +333,19 @@ st.markdown(
         Built for makers who want detail — not FDM 3D prints For now.
       </p>
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
-st.markdown(
+show_html(
     """
     <div class="cp-note">
       <strong>Demo accounts only</strong> — login is stored in session and resets when you leave.
       Real checkout can be added with Stripe later.
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
-st.markdown('<p class="cp-section">Account</p>', unsafe_allow_html=True)
+show_html('<p class="cp-section">Account</p>')
 tab_login, tab_signup = st.tabs(["Login", "Signup"])
 
 with tab_login:
@@ -381,7 +376,7 @@ with tab_signup:
 if st.session_state.logged_in_user:
     st.write(f"Logged in as **{st.session_state.logged_in_user}**")
 
-st.markdown('<p class="cp-section">Shop</p>', unsafe_allow_html=True)
+show_html('<p class="cp-section">Shop</p>')
 
 products = [
     {
@@ -403,7 +398,7 @@ shop_left, shop_right = st.columns([1.35, 1], gap="large")
 with shop_left:
     for p in products:
         left = st.session_state.stock.get(p["id"], 0)
-        st.markdown(
+        show_html(
             f"""
             <div class="cp-card">
               <h3 style="margin:0 0 0.35rem 0;">{p['name']}
@@ -411,8 +406,7 @@ with shop_left:
               </h3>
               <p style="margin:0 0 0.35rem 0; color:#292524; font-weight:500;">{p['desc']}</p>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
         if left > 0:
             st.caption(f"In stock: {left}")
@@ -431,23 +425,21 @@ with shop_left:
             st.rerun()
 
 with shop_right:
-    st.markdown(
+    show_html(
         """
         <div class="cp-glow-panel">
           <h3>Next page</h3>
           <p>
             More items are on the next page.
-            Press below when this panel glows.
           </p>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
     if st.button("Next page →", key="goto_next_page", use_container_width=True):
         st.session_state.current_page = "next"
         st.rerun()
 
-st.markdown('<p class="cp-section">Your cart</p>', unsafe_allow_html=True)
+show_html('<p class="cp-section">Your cart</p>')
 if not st.session_state.cart:
     st.info("Cart is empty. Add a print above.")
 else:
@@ -492,16 +484,15 @@ else:
                 st.write(f"Notes saved: {notes}")
             st.session_state.cart = []
 
-st.markdown('<p class="cp-section">Contact</p>', unsafe_allow_html=True)
+show_html('<p class="cp-section">Contact</p>')
 st.write("For real orders and commissions, reach out or add Stripe checkout next.")
 st.link_button("Email enquiries", "mailto:hello@collectprints.example")
 
-st.markdown(
+show_html(
     """
     <div class="cp-footer">
       Copyright 2026 Collect Prints. All rights reserved.<br>
       Resin 3D printed products · Demo shop
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
 )
