@@ -39,6 +39,12 @@ if "logged_in_user" not in st.session_state:
     st.session_state.logged_in_user = None
 if "cart" not in st.session_state:
     st.session_state.cart = []
+if "stock" not in st.session_state:
+    # starting stock (resets when app session restarts)
+    st.session_state.stock = {
+        "keycaps": 40,
+        "commission": 5,  # limited commission slots
+    }
 
 tab_login, tab_signup = st.tabs(["Login", "Signup"])
 
@@ -90,11 +96,22 @@ products = [
 
 for p in products:
     with st.container():
+        left = st.session_state.stock.get(p["id"], 0)
         st.markdown(f"### {p['name']} — £{p['price']:.2f}")
         st.write(p["desc"])
-        if st.button(f"Add to cart — {p['name']}", key=f"add_{p['id']}"):
+        if left > 0:
+            st.caption(f"In stock: {left}")
+        else:
+            st.error("Out of stock")
+        if st.button(
+            f"Add to cart — {p['name']}",
+            key=f"add_{p['id']}",
+            disabled=left <= 0,
+        ):
             st.session_state.cart.append(p)
-            st.success(f"Added {p['name']} to cart")
+            st.session_state.stock[p["id"]] -= 1
+            st.success(f"Added {p['name']} to cart ({st.session_state.stock[p['id']]} left)")
+            st.rerun()
 
 st.subheader("Your cart")
 if not st.session_state.cart:
@@ -106,10 +123,13 @@ else:
         total += item["price"]
     st.write(f"**Total: £{total:.2f}**")
 
-    notes = st.text_area("Order notes (colour, name for keychain, etc.)")
+    notes = st.text_area("Order notes (colour, legend, keycap style, etc.)")
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Clear cart"):
+            # put stock back
+            for item in st.session_state.cart:
+                st.session_state.stock[item["id"]] = st.session_state.stock.get(item["id"], 0) + 1
             st.session_state.cart = []
             st.rerun()
     with col2:
