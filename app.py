@@ -239,7 +239,7 @@ if "current_page" not in st.session_state:
 if "stock" not in st.session_state:
     st.session_state.stock = {
         "keycaps": 40,
-        "commission": 5,
+        "commission": 15,
         "ring_tiny": 3,
         "ring_smallish": 4,
         "ring_small": 5,
@@ -248,6 +248,7 @@ if "stock" not in st.session_state:
     }
 else:
     for key, qty in {
+        "commission": 15,
         "ring_tiny": 3,
         "ring_smallish": 4,
         "ring_small": 5,
@@ -255,6 +256,9 @@ else:
         "ring_big": 8,
     }.items():
         st.session_state.stock.setdefault(key, qty)
+    # Keep Custom Resin Commission well stocked (was low before)
+    if st.session_state.stock.get("commission", 0) < 15:
+        st.session_state.stock["commission"] = 15
 
 RING_SIZES = [
     {"id": "ring_tiny", "label": "Tiny", "css": "tiny", "price": 6.00},
@@ -438,7 +442,7 @@ products = [
         "id": "keycaps",
         "name": "Resin Keycaps",
         "price": 8.00,
-        "desc": "Custom resin keycaps. Tell me style/colour/legend in order notes."
+        "desc": "Custom resin keycaps. Tell me style/colour/legend in order notes.",
     },
     {
         "id": "commission",
