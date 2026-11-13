@@ -13,27 +13,20 @@ st.markdown(
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
-      html, body, [class*="css"]  {
-        font-family: "Figtree", sans-serif !important;
-        color: #1c1917 !important;
+      /* Fonts only globally — don't force colors on all Streamlit widgets */
+      html, body, .stApp, [data-testid="stAppViewContainer"] {
+        font-family: "Figtree", sans-serif;
       }
-      p, label, span, li, .stMarkdown, [data-testid="stMarkdownContainer"] p,
-      [data-testid="stWidgetLabel"] p, [data-testid="stCaption"] {
-        color: #292524 !important;
-        opacity: 1 !important;
-      }
-      h1, h2, h3, .cp-brand, [data-testid="stMarkdownContainer"] h1,
-      [data-testid="stMarkdownContainer"] h2,
-      [data-testid="stMarkdownContainer"] h3 {
+      h1, h2, h3, .cp-brand, .cp-section {
         font-family: "Syne", sans-serif !important;
         letter-spacing: -0.02em;
-        color: #0c0a09 !important;
       }
       .stApp {
         background:
           radial-gradient(1200px 500px at 10% -10%, #ffedd5 0%, transparent 55%),
           radial-gradient(900px 400px at 100% 0%, #e2e8f0 0%, transparent 50%),
           #f8fafc;
+        color: #1c1917;
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
@@ -43,7 +36,6 @@ st.markdown(
       }
       .cp-hero {
         background: linear-gradient(135deg, #1c1917 0%, #292524 55%, #9a3412 140%);
-        color: #fff7ed;
         border-radius: 18px;
         padding: 2.4rem 2rem 2rem;
         margin-bottom: 1.5rem;
@@ -54,7 +46,7 @@ st.markdown(
         font-weight: 800;
         margin: 0 0 0.35rem 0;
         line-height: 1.05;
-        color: #fff7ed !important;
+        color: #fff7ed;
       }
       .cp-tag {
         display: inline-block;
@@ -63,7 +55,7 @@ st.markdown(
         letter-spacing: 0.12em;
         text-transform: uppercase;
         background: #ea580c;
-        color: white !important;
+        color: #ffffff;
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
         margin-bottom: 0.9rem;
@@ -71,23 +63,22 @@ st.markdown(
       .cp-sub {
         margin: 0;
         font-size: 1.08rem;
-        opacity: 1;
         max-width: 36rem;
         line-height: 1.55;
-        color: #ffedd5 !important;
+        color: #ffedd5;
         font-weight: 500;
       }
       .cp-note {
         background: #ecfeff;
         border: 1px solid #67e8f9;
-        color: #0e7490 !important;
+        color: #0e7490;
         border-radius: 12px;
         padding: 0.85rem 1rem;
         margin: 1rem 0 1.25rem;
         font-size: 1rem;
         font-weight: 500;
       }
-      .cp-note strong { color: #155e75 !important; }
+      .cp-note strong { color: #155e75; }
       .cp-card {
         background: #ffffff;
         border: 1px solid #d6d3d1;
@@ -96,24 +87,25 @@ st.markdown(
         margin-bottom: 0.85rem;
         box-shadow: 0 8px 24px rgba(28, 25, 23, 0.05);
       }
+      .cp-card h3 { color: #0c0a09; margin: 0 0 0.35rem 0; }
       .cp-card p {
-        color: #44403c !important;
+        color: #44403c;
         font-weight: 500;
+        margin: 0 0 0.35rem 0;
       }
       .cp-price {
-        color: #c2410c !important;
+        color: #c2410c;
         font-weight: 700;
       }
       .cp-section {
-        font-family: "Syne", sans-serif !important;
         font-size: 1.45rem;
         font-weight: 700;
         margin: 1.6rem 0 0.75rem;
-        color: #0c0a09 !important;
+        color: #0c0a09;
       }
       .cp-footer {
         text-align: center;
-        color: #57534e !important;
+        color: #57534e;
         font-size: 0.95rem;
         margin-top: 2.5rem;
         padding-top: 1.25rem;
