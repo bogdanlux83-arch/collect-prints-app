@@ -5,8 +5,7 @@ st.title("Collect Prints")
 st.header("Custom 3D prints for sale")
 
 st.write(
-    "Buy ready-made and custom 3D printed items. "
-    "FDM and resin prints — figures, props, replacements, and commissions."
+    "Resin 3D prints for sale — custom keycaps and made-to-order commissions."
 )
 
 st.markdown(
@@ -76,28 +75,16 @@ st.subheader("Shop — 3D printed products")
 
 products = [
     {
-        "id": "dino-bust",
-        "name": "Dinosaur Bust (PLA)",
-        "price": 24.99,
-        "desc": "Desk-size dino bust, ~15cm. Choose colour in notes at checkout.",
-    },
-    {
-        "id": "keychain",
-        "name": "Custom Name Keychain",
-        "price": 8.99,
-        "desc": "Personalised PLA keychain. Add the name in order notes.",
-    },
-    {
-        "id": "phone-stand",
-        "name": "Phone Stand",
-        "price": 12.99,
-        "desc": "Sturdy FDM phone stand. Black, white, or grey.",
+        "id": "keycaps",
+        "name": "Resin Keycaps",
+        "price": 8.00,
+        "desc": "Custom resin keycaps. Tell me style/colour/legend in order notes.",
     },
     {
         "id": "commission",
-        "name": "Custom Commission",
-        "price": 49.99,
-        "desc": "Your model or idea printed. Message after order to confirm details.",
+        "name": "Custom Resin Commission",
+        "price": 35.00,
+        "desc": "Your model or idea printed in resin. Message after order to confirm details.",
     },
 ]
 
