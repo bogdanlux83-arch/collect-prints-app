@@ -1,0 +1,150 @@
+import streamlit as st
+
+st.set_page_config(page_title="Collect Prints", page_icon="🖨️")
+st.title("Collect Prints")
+st.header("Custom 3D prints for sale")
+
+st.write(
+    "Buy ready-made and custom 3D printed items. "
+    "FDM and resin prints — figures, props, replacements, and commissions."
+)
+
+st.markdown(
+    """
+    <span style="background: linear-gradient(90deg, #F97316, #EA580C);
+                 color: white; padding: 4px 12px; font-weight: bold; border-radius: 4px;">
+        COLLECT PRINTS · SHOP
+    </span>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Demo auth
+st.markdown(
+    """
+    <span style="background: linear-gradient(90deg, #06B6D4, #3B82F6);
+                 color: white; padding: 4px 12px; font-weight: bold; border-radius: 4px;">
+        Important
+    </span>
+    """,
+    unsafe_allow_html=True,
+)
+st.write(
+    "Demo accounts only for now — login is stored in session and resets when you leave. "
+    "Real checkout/payments can be added with Stripe later."
+)
+
+if "users" not in st.session_state:
+    st.session_state.users = {"admin": "admin"}
+if "logged_in_user" not in st.session_state:
+    st.session_state.logged_in_user = None
+if "cart" not in st.session_state:
+    st.session_state.cart = []
+
+tab_login, tab_signup = st.tabs(["Login", "Signup"])
+
+with tab_login:
+    login_username = st.text_input("Username", key="login_username")
+    login_password = st.text_input("Password", type="password", key="login_password")
+    if st.button("Login"):
+        if (
+            login_username in st.session_state.users
+            and st.session_state.users[login_username] == login_password
+        ):
+            st.session_state.logged_in_user = login_username
+            st.success(f"Welcome back, {login_username}!")
+        else:
+            st.error("Invalid username or password")
+
+with tab_signup:
+    signup_username = st.text_input("Username", key="signup_username")
+    signup_password = st.text_input("Password", type="password", key="signup_password")
+    if st.button("Create Account"):
+        if not signup_username or not signup_password:
+            st.warning("Please enter a username and password")
+        elif signup_username in st.session_state.users:
+            st.error("Username already exists")
+        else:
+            st.session_state.users[signup_username] = signup_password
+            st.success(f"Account created successfully for {signup_username}!")
+
+if st.session_state.logged_in_user:
+    st.write(f"Logged in as **{st.session_state.logged_in_user}**")
+
+# Products for sale
+st.subheader("Shop — 3D printed products")
+
+products = [
+    {
+        "id": "dino-bust",
+        "name": "Dinosaur Bust (PLA)",
+        "price": 24.99,
+        "desc": "Desk-size dino bust, ~15cm. Choose colour in notes at checkout.",
+    },
+    {
+        "id": "keychain",
+        "name": "Custom Name Keychain",
+        "price": 8.99,
+        "desc": "Personalised PLA keychain. Add the name in order notes.",
+    },
+    {
+        "id": "phone-stand",
+        "name": "Phone Stand",
+        "price": 12.99,
+        "desc": "Sturdy FDM phone stand. Black, white, or grey.",
+    },
+    {
+        "id": "commission",
+        "name": "Custom Commission",
+        "price": 49.99,
+        "desc": "Your model or idea printed. Message after order to confirm details.",
+    },
+]
+
+for p in products:
+    with st.container():
+        st.markdown(f"### {p['name']} — £{p['price']:.2f}")
+        st.write(p["desc"])
+        if st.button(f"Add to cart — {p['name']}", key=f"add_{p['id']}"):
+            st.session_state.cart.append(p)
+            st.success(f"Added {p['name']} to cart")
+
+st.subheader("Your cart")
+if not st.session_state.cart:
+    st.info("Cart is empty. Add a print above.")
+else:
+    total = 0.0
+    for i, item in enumerate(st.session_state.cart):
+        st.write(f"- {item['name']} — £{item['price']:.2f}")
+        total += item["price"]
+    st.write(f"**Total: £{total:.2f}**")
+
+    notes = st.text_area("Order notes (colour, name for keychain, etc.)")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Clear cart"):
+            st.session_state.cart = []
+            st.rerun()
+    with col2:
+        if st.button("Place order (demo)"):
+            st.success(
+                "Demo order placed! No real payment yet. "
+                "Next step: connect Stripe to take real money."
+            )
+            if notes.strip():
+                st.write(f"Notes saved: {notes}")
+            st.session_state.cart = []
+
+st.subheader("Contact / buy")
+st.write("For real orders and commissions, reach out or add Stripe checkout next.")
+st.link_button("Email enquiries (mailto)", "mailto:hello@collectprints.example")
+
+st.markdown(
+    """
+    <div style='text-align:center; color:gray;'>
+      Copyright 2026 Collect Prints. All rights reserved.<br>
+      3D printed products · Demo shop
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
