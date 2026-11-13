@@ -175,7 +175,14 @@ if "stock" not in st.session_state:
     st.session_state.stock = {
         "keycaps": 40,
         "commission": 5,
+        "spacebar_tiny": 10,
+        "spacebar_smallish": 10,
+        "spacebar_small": 10,
+        "spacebar_medium": 10,
+        "spacebar_big": 10,
     }
+
+st.info("Looking for spacebars? Open **Spacebar Keycaps** in the sidebar.")
 
 st.markdown('<p class="cp-section">Account</p>', unsafe_allow_html=True)
 tab_login, tab_signup = st.tabs(["Login", "Signup"])
