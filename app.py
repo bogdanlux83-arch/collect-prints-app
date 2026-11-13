@@ -15,12 +15,19 @@ st.markdown(
     <style>
       html, body, [class*="css"]  {
         font-family: "Figtree", sans-serif !important;
+        color: #1c1917 !important;
+      }
+      p, label, span, li, .stMarkdown, [data-testid="stMarkdownContainer"] p,
+      [data-testid="stWidgetLabel"] p, [data-testid="stCaption"] {
+        color: #292524 !important;
+        opacity: 1 !important;
       }
       h1, h2, h3, .cp-brand, [data-testid="stMarkdownContainer"] h1,
       [data-testid="stMarkdownContainer"] h2,
       [data-testid="stMarkdownContainer"] h3 {
         font-family: "Syne", sans-serif !important;
         letter-spacing: -0.02em;
+        color: #0c0a09 !important;
       }
       .stApp {
         background:
@@ -47,6 +54,7 @@ st.markdown(
         font-weight: 800;
         margin: 0 0 0.35rem 0;
         line-height: 1.05;
+        color: #fff7ed !important;
       }
       .cp-tag {
         display: inline-block;
@@ -55,37 +63,45 @@ st.markdown(
         letter-spacing: 0.12em;
         text-transform: uppercase;
         background: #ea580c;
-        color: white;
+        color: white !important;
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
         margin-bottom: 0.9rem;
       }
       .cp-sub {
         margin: 0;
-        font-size: 1.05rem;
-        opacity: 0.9;
+        font-size: 1.08rem;
+        opacity: 1;
         max-width: 36rem;
-        line-height: 1.5;
+        line-height: 1.55;
+        color: #ffedd5 !important;
+        font-weight: 500;
       }
       .cp-note {
         background: #ecfeff;
-        border: 1px solid #a5f3fc;
-        color: #155e75;
+        border: 1px solid #67e8f9;
+        color: #0e7490 !important;
         border-radius: 12px;
         padding: 0.85rem 1rem;
         margin: 1rem 0 1.25rem;
-        font-size: 0.95rem;
+        font-size: 1rem;
+        font-weight: 500;
       }
+      .cp-note strong { color: #155e75 !important; }
       .cp-card {
-        background: rgba(255,255,255,0.92);
-        border: 1px solid #e7e5e4;
+        background: #ffffff;
+        border: 1px solid #d6d3d1;
         border-radius: 16px;
         padding: 1.15rem 1.2rem 0.4rem;
         margin-bottom: 0.85rem;
         box-shadow: 0 8px 24px rgba(28, 25, 23, 0.05);
       }
+      .cp-card p {
+        color: #44403c !important;
+        font-weight: 500;
+      }
       .cp-price {
-        color: #c2410c;
+        color: #c2410c !important;
         font-weight: 700;
       }
       .cp-section {
@@ -93,15 +109,16 @@ st.markdown(
         font-size: 1.45rem;
         font-weight: 700;
         margin: 1.6rem 0 0.75rem;
-        color: #1c1917;
+        color: #0c0a09 !important;
       }
       .cp-footer {
         text-align: center;
-        color: #78716c;
-        font-size: 0.9rem;
+        color: #57534e !important;
+        font-size: 0.95rem;
         margin-top: 2.5rem;
         padding-top: 1.25rem;
-        border-top: 1px solid #e7e5e4;
+        border-top: 1px solid #d6d3d1;
+        font-weight: 500;
       }
       div[data-testid="stButton"] button {
         border-radius: 10px !important;
@@ -205,7 +222,7 @@ for p in products:
           <h3 style="margin:0 0 0.35rem 0;">{p['name']}
             <span class="cp-price">£{p['price']:.2f}</span>
           </h3>
-          <p style="margin:0 0 0.35rem 0; color:#44403c;">{p['desc']}</p>
+          <p style="margin:0 0 0.35rem 0; color:#292524; font-weight:500;">{p['desc']}</p>
         </div>
         """,
         unsafe_allow_html=True,
