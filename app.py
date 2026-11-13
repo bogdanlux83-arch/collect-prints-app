@@ -117,10 +117,25 @@ st.subheader("Your cart")
 if not st.session_state.cart:
     st.info("Cart is empty. Add a print above.")
 else:
-    total = 0.0
+    subtotal = 0.0
     for i, item in enumerate(st.session_state.cart):
         st.write(f"- {item['name']} — £{item['price']:.2f}")
-        total += item["price"]
+        subtotal += item["price"]
+
+    LABOUR_RATE = 0.15  # 15% labour
+    TAX_RATE = 0.20     # 20% VAT
+    SHIPPING_FEE = 3.50
+
+    labour = subtotal * LABOUR_RATE
+    taxable = subtotal + labour
+    tax = taxable * TAX_RATE
+    shipping = SHIPPING_FEE
+    total = taxable + tax + shipping
+
+    st.write(f"Subtotal: £{subtotal:.2f}")
+    st.write(f"Labour (15%): £{labour:.2f}")
+    st.write(f"Tax / VAT (20%): £{tax:.2f}")
+    st.write(f"Shipping: £{shipping:.2f}")
     st.write(f"**Total: £{total:.2f}**")
 
     notes = st.text_area("Order notes (colour, legend, keycap style, etc.)")
