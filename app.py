@@ -188,18 +188,25 @@ show_html(
         margin: 1.2rem 0 1.5rem;
       }
       .size-chip {
-        min-width: 7.2rem;
         text-align: center;
         background: #fff7ed;
         border: 2px solid #fb923c;
         border-radius: 999px;
-        padding: 0.85rem 1rem;
         font-weight: 700;
         color: #7c2d12;
         box-shadow: 0 8px 18px rgba(234, 88, 12, 0.12);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
-      .size-chip .label { font-family: "Syne", sans-serif; font-size: 1.05rem; }
-      .size-chip .meta { font-size: 0.9rem; font-weight: 600; color: #9a3412; margin-top: 0.25rem; }
+      .size-chip.tiny { width: 4.2rem; height: 4.2rem; font-size: 0.75rem; }
+      .size-chip.smallish { width: 5.2rem; height: 5.2rem; font-size: 0.82rem; }
+      .size-chip.small { width: 6.2rem; height: 6.2rem; font-size: 0.9rem; }
+      .size-chip.medium { width: 7.4rem; height: 7.4rem; font-size: 0.98rem; }
+      .size-chip.big { width: 8.8rem; height: 8.8rem; font-size: 1.05rem; }
+      .size-chip .label { font-family: "Syne", sans-serif; }
+      .size-chip .meta { font-size: 0.78em; font-weight: 600; color: #9a3412; margin-top: 0.2rem; }
     </style>
     """
 )
@@ -216,31 +223,38 @@ if "stock" not in st.session_state:
     st.session_state.stock = {
         "keycaps": 40,
         "commission": 5,
-        "spacebar_tiny": 10,
-        "spacebar_smallish": 10,
-        "spacebar_small": 10,
-        "spacebar_medium": 10,
-        "spacebar_big": 10,
+        "ring_tiny": 10,
+        "ring_smallish": 10,
+        "ring_small": 10,
+        "ring_medium": 10,
+        "ring_big": 10,
     }
 else:
     for key, qty in {
-        "spacebar_tiny": 10,
-        "spacebar_smallish": 10,
-        "spacebar_small": 10,
-        "spacebar_medium": 10,
-        "spacebar_big": 10,
+        "ring_tiny": 10,
+        "ring_smallish": 10,
+        "ring_small": 10,
+        "ring_medium": 10,
+        "ring_big": 10,
     }.items():
         st.session_state.stock.setdefault(key, qty)
 
-SPACEBAR_SIZES = [
-    {"id": "spacebar_tiny", "label": "Tiny", "price": 10.00},
-    {"id": "spacebar_smallish", "label": "Smallish", "price": 12.00},
-    {"id": "spacebar_small", "label": "Small", "price": 14.00},
-    {"id": "spacebar_medium", "label": "Medium", "price": 16.00},
-    {"id": "spacebar_big", "label": "Big", "price": 18.00},
+RING_SIZES = [
+    {"id": "ring_tiny", "label": "Tiny", "css": "tiny", "price": 6.00},
+    {"id": "ring_smallish", "label": "Smallish", "css": "smallish", "price": 7.00},
+    {"id": "ring_small", "label": "Small", "css": "small", "price": 8.00},
+    {"id": "ring_medium", "label": "Medium", "css": "medium", "price": 9.00},
+    {"id": "ring_big", "label": "Big", "css": "big", "price": 10.00},
 ]
 
-# --- Next page (spacebar sizes) ---
+KEYCAP_ONE_SIZE = {
+    "id": "keycaps",
+    "name": "Resin Keycap",
+    "price": 8.00,
+    "desc": "One standard size. Add colour/legend details in cart notes on the home page.",
+}
+
+# --- Next page ---
 if st.session_state.current_page == "next":
     show_html(
         """
@@ -248,7 +262,7 @@ if st.session_state.current_page == "next":
           <div class="cp-tag">Next page</div>
           <p class="cp-brand">More items</p>
           <p class="cp-sub">
-            Spacebar keycaps in five sizes — tiny, smallish, small, medium, big.
+            Keycaps come in one size. Rings come in five sizes — tiny to big.
           </p>
         </div>
         """
@@ -258,51 +272,83 @@ if st.session_state.current_page == "next":
         st.session_state.current_page = "home"
         st.rerun()
 
+    show_html('<p class="cp-section">Keycaps — one size</p>')
+    keycap_left = st.session_state.stock.get(KEYCAP_ONE_SIZE["id"], 0)
+    show_html(
+        f"""
+        <div class="cp-card">
+          <h3 style="margin:0 0 0.35rem 0;">
+            {KEYCAP_ONE_SIZE['name']}
+            <span class="cp-price">£{KEYCAP_ONE_SIZE['price']:.2f}</span>
+          </h3>
+          <p style="margin:0; color:#292524; font-weight:500;">
+            {KEYCAP_ONE_SIZE['desc']}
+          </p>
+        </div>
+        """
+    )
+    if keycap_left > 0:
+        st.caption(f"In stock: {keycap_left}")
+    else:
+        st.error("Out of stock")
+    if st.button(
+        "Add keycap to cart",
+        disabled=keycap_left <= 0,
+        key="add_keycap_next",
+    ):
+        st.session_state.cart.append(KEYCAP_ONE_SIZE)
+        st.session_state.stock[KEYCAP_ONE_SIZE["id"]] -= 1
+        st.success(
+            f"Added {KEYCAP_ONE_SIZE['name']} to cart "
+            f"({st.session_state.stock[KEYCAP_ONE_SIZE['id']]} left)"
+        )
+        st.rerun()
+
+    show_html('<p class="cp-section">Rings — pick a size</p>')
     chips = []
-    for s in SPACEBAR_SIZES:
+    for s in RING_SIZES:
         left = st.session_state.stock.get(s["id"], 0)
         chips.append(
-            f'<div class="size-chip"><div class="label">{s["label"]}</div>'
-            f'<div class="meta">£{s["price"]:.2f} · {left} left</div></div>'
+            f'<div class="size-chip {s["css"]}"><div class="label">{s["label"]}</div>'
+            f'<div class="meta">£{s["price"]:.2f} · {left}</div></div>'
         )
     show_html(f'<div class="size-ring">{"".join(chips)}</div>')
 
-    show_html('<p class="cp-section">Choose a size</p>')
-    size_labels = [s["label"] for s in SPACEBAR_SIZES]
-    choice = st.radio("Size", size_labels, horizontal=True, key="spacebar_size_choice")
-    selected = next(s for s in SPACEBAR_SIZES if s["label"] == choice)
-    left = st.session_state.stock.get(selected["id"], 0)
+    size_labels = [s["label"] for s in RING_SIZES]
+    choice = st.radio("Ring size", size_labels, horizontal=True, key="ring_size_choice")
+    selected = next(s for s in RING_SIZES if s["label"] == choice)
+    ring_left = st.session_state.stock.get(selected["id"], 0)
 
     show_html(
         f"""
         <div class="cp-card">
           <h3 style="margin:0 0 0.35rem 0;">
-            Spacebar Keycap — {selected['label']}
+            Resin Ring — {selected['label']}
             <span class="cp-price">£{selected['price']:.2f}</span>
           </h3>
           <p style="margin:0; color:#292524; font-weight:500;">
-            Resin spacebar keycap in <strong>{selected['label']}</strong> size.
-            Add colour/legend details in cart notes on the home page.
+            Resin ring in <strong>{selected['label']}</strong> size.
+            Add colour details in cart notes on the home page.
           </p>
         </div>
         """
     )
 
-    if left > 0:
-        st.caption(f"In stock: {left}")
+    if ring_left > 0:
+        st.caption(f"In stock: {ring_left}")
     else:
         st.error("Out of stock for this size")
 
     if st.button(
-        f"Add {selected['label']} spacebar to cart",
-        disabled=left <= 0,
-        key="add_spacebar",
+        f"Add {selected['label']} ring to cart",
+        disabled=ring_left <= 0,
+        key="add_ring",
     ):
         item = {
             "id": selected["id"],
-            "name": f"Spacebar Keycap ({selected['label']})",
+            "name": f"Resin Ring ({selected['label']})",
             "price": selected["price"],
-            "desc": f"Resin spacebar — {selected['label']}",
+            "desc": f"Resin ring — {selected['label']}",
         }
         st.session_state.cart.append(item)
         st.session_state.stock[selected["id"]] -= 1
