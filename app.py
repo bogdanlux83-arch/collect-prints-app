@@ -172,11 +172,160 @@ st.markdown(
           border-color: #ffedd5;
         }
       }
+      .size-ring {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+        margin: 1.2rem 0 1.5rem;
+      }
+      .size-chip {
+        min-width: 7.2rem;
+        text-align: center;
+        background: #fff7ed;
+        border: 2px solid #fb923c;
+        border-radius: 999px;
+        padding: 0.85rem 1rem;
+        font-weight: 700;
+        color: #7c2d12;
+        box-shadow: 0 8px 18px rgba(234, 88, 12, 0.12);
+      }
+      .size-chip .label { font-family: "Syne", sans-serif; font-size: 1.05rem; }
+      .size-chip .meta { font-size: 0.9rem; font-weight: 600; color: #9a3412; margin-top: 0.25rem; }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
+if "users" not in st.session_state:
+    st.session_state.users = {"admin": "admin"}
+if "logged_in_user" not in st.session_state:
+    st.session_state.logged_in_user = None
+if "cart" not in st.session_state:
+    st.session_state.cart = []
+if "current_page" not in st.session_state:
+    st.session_state.current_page = "home"
+if "stock" not in st.session_state:
+    st.session_state.stock = {
+        "keycaps": 40,
+        "commission": 5,
+        "spacebar_tiny": 10,
+        "spacebar_smallish": 10,
+        "spacebar_small": 10,
+        "spacebar_medium": 10,
+        "spacebar_big": 10,
+    }
+else:
+    for key, qty in {
+        "spacebar_tiny": 10,
+        "spacebar_smallish": 10,
+        "spacebar_small": 10,
+        "spacebar_medium": 10,
+        "spacebar_big": 10,
+    }.items():
+        st.session_state.stock.setdefault(key, qty)
+
+SPACEBAR_SIZES = [
+    {"id": "spacebar_tiny", "label": "Tiny", "price": 10.00},
+    {"id": "spacebar_smallish", "label": "Smallish", "price": 12.00},
+    {"id": "spacebar_small", "label": "Small", "price": 14.00},
+    {"id": "spacebar_medium", "label": "Medium", "price": 16.00},
+    {"id": "spacebar_big", "label": "Big", "price": 18.00},
+]
+
+# --- Next page (spacebar sizes) ---
+if st.session_state.current_page == "next":
+    st.markdown(
+        """
+        <div class="cp-hero">
+          <div class="cp-tag">Next page</div>
+          <p class="cp-brand">More items</p>
+          <p class="cp-sub">
+            Spacebar keycaps in five sizes — tiny, smallish, small, medium, big.
+          </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    if st.button("← Back to home", key="back_home"):
+        st.session_state.current_page = "home"
+        st.rerun()
+
+    chips = []
+    for s in SPACEBAR_SIZES:
+        left = st.session_state.stock.get(s["id"], 0)
+        chips.append(
+            f"""
+            <div class="size-chip">
+              <div class="label">{s['label']}</div>
+              <div class="meta">£{s['price']:.2f} · {left} left</div>
+            </div>
+            """
+        )
+    st.markdown(
+        f'<div class="size-ring">{"".join(chips)}</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('<p class="cp-section">Choose a size</p>', unsafe_allow_html=True)
+    size_labels = [s["label"] for s in SPACEBAR_SIZES]
+    choice = st.radio("Size", size_labels, horizontal=True, key="spacebar_size_choice")
+    selected = next(s for s in SPACEBAR_SIZES if s["label"] == choice)
+    left = st.session_state.stock.get(selected["id"], 0)
+
+    st.markdown(
+        f"""
+        <div class="cp-card">
+          <h3 style="margin:0 0 0.35rem 0;">
+            Spacebar Keycap — {selected['label']}
+            <span class="cp-price">£{selected['price']:.2f}</span>
+          </h3>
+          <p style="margin:0; color:#292524; font-weight:500;">
+            Resin spacebar keycap in <strong>{selected['label']}</strong> size.
+            Add colour/legend details in cart notes on the home page.
+          </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    if left > 0:
+        st.caption(f"In stock: {left}")
+    else:
+        st.error("Out of stock for this size")
+
+    if st.button(
+        f"Add {selected['label']} spacebar to cart",
+        disabled=left <= 0,
+        key="add_spacebar",
+    ):
+        item = {
+            "id": selected["id"],
+            "name": f"Spacebar Keycap ({selected['label']})",
+            "price": selected["price"],
+            "desc": f"Resin spacebar — {selected['label']}",
+        }
+        st.session_state.cart.append(item)
+        st.session_state.stock[selected["id"]] -= 1
+        st.success(
+            f"Added {item['name']} to cart "
+            f"({st.session_state.stock[selected['id']]} left)"
+        )
+        st.rerun()
+
+    st.info("Cart and checkout are on the home page.")
+    st.markdown(
+        """
+        <div class="cp-footer">
+          Copyright 2026 Collect Prints · Next page
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.stop()
+
+# --- Home page ---
 st.markdown(
     """
     <div class="cp-hero">
@@ -200,23 +349,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-if "users" not in st.session_state:
-    st.session_state.users = {"admin": "admin"}
-if "logged_in_user" not in st.session_state:
-    st.session_state.logged_in_user = None
-if "cart" not in st.session_state:
-    st.session_state.cart = []
-if "stock" not in st.session_state:
-    st.session_state.stock = {
-        "keycaps": 40,
-        "commission": 5,
-        "spacebar_tiny": 10,
-        "spacebar_smallish": 10,
-        "spacebar_small": 10,
-        "spacebar_medium": 10,
-        "spacebar_big": 10,
-    }
 
 st.markdown('<p class="cp-section">Account</p>', unsafe_allow_html=True)
 tab_login, tab_signup = st.tabs(["Login", "Signup"])
@@ -312,7 +444,8 @@ with shop_right:
         unsafe_allow_html=True,
     )
     if st.button("Next page →", key="goto_next_page", use_container_width=True):
-        st.switch_page("pages/1_Next_Page.py")
+        st.session_state.current_page = "next"
+        st.rerun()
 
 st.markdown('<p class="cp-section">Your cart</p>', unsafe_allow_html=True)
 if not st.session_state.cart:
