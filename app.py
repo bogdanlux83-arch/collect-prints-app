@@ -438,8 +438,7 @@ products = [
         "id": "keycaps",
         "name": "Resin Keycaps",
         "price": 8.00,
-        "desc": "Custom resin keycaps. Tell me style/colour/legend in order notes.",
-        "You Would get 4 keycaps in the pack.",
+        "desc": "Custom resin keycaps. Tell me style/colour/legend in order notes."
     },
     {
         "id": "commission",
