@@ -31,9 +31,14 @@ st.markdown(
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
-        padding-top: 2rem;
-        padding-bottom: 3rem;
-        max-width: 980px;
+        padding-top: 1.5rem;
+        padding-bottom: 2.5rem;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+        max-width: 1280px;
+      }
+      section.main > div {
+        max-width: 1280px;
       }
       .cp-hero {
         background: linear-gradient(125deg, #9a3412 0%, #c2410c 40%, #ea580c 75%, #fb923c 100%);
@@ -220,32 +225,36 @@ products = [
     },
 ]
 
-for p in products:
-    left = st.session_state.stock.get(p["id"], 0)
-    st.markdown(
-        f"""
-        <div class="cp-card">
-          <h3 style="margin:0 0 0.35rem 0;">{p['name']}
-            <span class="cp-price">£{p['price']:.2f}</span>
-          </h3>
-          <p style="margin:0 0 0.35rem 0; color:#292524; font-weight:500;">{p['desc']}</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    if left > 0:
-        st.caption(f"In stock: {left}")
-    else:
-        st.error("Out of stock")
-    if st.button(
-        f"Add to cart — {p['name']}",
-        key=f"add_{p['id']}",
-        disabled=left <= 0,
-    ):
-        st.session_state.cart.append(p)
-        st.session_state.stock[p["id"]] -= 1
-        st.success(f"Added {p['name']} to cart ({st.session_state.stock[p['id']]} left)")
-        st.rerun()
+cols = st.columns(2)
+for i, p in enumerate(products):
+    with cols[i % 2]:
+        left = st.session_state.stock.get(p["id"], 0)
+        st.markdown(
+            f"""
+            <div class="cp-card">
+              <h3 style="margin:0 0 0.35rem 0;">{p['name']}
+                <span class="cp-price">£{p['price']:.2f}</span>
+              </h3>
+              <p style="margin:0 0 0.35rem 0; color:#292524; font-weight:500;">{p['desc']}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if left > 0:
+            st.caption(f"In stock: {left}")
+        else:
+            st.error("Out of stock")
+        if st.button(
+            f"Add to cart — {p['name']}",
+            key=f"add_{p['id']}",
+            disabled=left <= 0,
+        ):
+            st.session_state.cart.append(p)
+            st.session_state.stock[p["id"]] -= 1
+            st.success(
+                f"Added {p['name']} to cart ({st.session_state.stock[p['id']]} left)"
+            )
+            st.rerun()
 
 st.markdown('<p class="cp-section">Your cart</p>', unsafe_allow_html=True)
 if not st.session_state.cart:
