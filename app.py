@@ -302,17 +302,17 @@ with shop_right:
     st.markdown(
         """
         <div class="cp-glow-panel">
-          <h3>Spacebar Keycaps</h3>
+          <h3>Next page</h3>
           <p>
-            Glowing portal → tiny, smallish, small, medium, big.
-            Press below to open the spacebar page.
+            More items are on the next page.
+            Press below when this panel glows.
           </p>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    if st.button("Enter spacebar shop →", key="goto_spacebars", use_container_width=True):
-        st.switch_page("pages/1_Spacebar_Keycaps.py")
+    if st.button("Next page →", key="goto_next_page", use_container_width=True):
+        st.switch_page("pages/1_Next_Page.py")
 
 st.markdown('<p class="cp-section">Your cart</p>', unsafe_allow_html=True)
 if not st.session_state.cart:
