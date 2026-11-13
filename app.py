@@ -217,11 +217,9 @@ show_html(
         align-items: center;
         justify-content: center;
       }
-      .size-chip.tiny { width: 4.2rem; height: 4.2rem; font-size: 0.75rem; }
-      .size-chip.smallish { width: 5.2rem; height: 5.2rem; font-size: 0.82rem; }
-      .size-chip.small { width: 6.2rem; height: 6.2rem; font-size: 0.9rem; }
-      .size-chip.medium { width: 7.4rem; height: 7.4rem; font-size: 0.98rem; }
-      .size-chip.big { width: 8.8rem; height: 8.8rem; font-size: 1.05rem; }
+      .size-chip.small { width: 5.5rem; height: 5.5rem; font-size: 0.9rem; }
+      .size-chip.medium { width: 7.2rem; height: 7.2rem; font-size: 1rem; }
+      .size-chip.big { width: 9rem; height: 9rem; font-size: 1.1rem; }
       .size-chip .label { font-family: "Syne", sans-serif; }
       .size-chip .meta { font-size: 0.78em; font-weight: 600; color: #9a3412; margin-top: 0.2rem; }
     </style>
@@ -240,29 +238,26 @@ if "stock" not in st.session_state:
     st.session_state.stock = {
         "keycaps": 40,
         "commission": 15,
-        "ring_tiny": 3,
-        "ring_smallish": 4,
-        "ring_small": 5,
-        "ring_medium": 6,
-        "ring_big": 8,
+        "ring_small": 10,
+        "ring_medium": 10,
+        "ring_big": 10,
     }
 else:
     for key, qty in {
         "commission": 15,
-        "ring_tiny": 3,
-        "ring_smallish": 4,
-        "ring_small": 5,
-        "ring_medium": 6,
-        "ring_big": 8,
+        "ring_small": 10,
+        "ring_medium": 10,
+        "ring_big": 10,
     }.items():
         st.session_state.stock.setdefault(key, qty)
-    # Keep Custom Resin Commission well stocked (was low before)
     if st.session_state.stock.get("commission", 0) < 15:
         st.session_state.stock["commission"] = 15
+    if "rings_stock_v3" not in st.session_state:
+        for ring_id in ("ring_small", "ring_medium", "ring_big"):
+            st.session_state.stock[ring_id] = 10
+        st.session_state.rings_stock_v3 = True
 
 RING_SIZES = [
-    {"id": "ring_tiny", "label": "Tiny", "css": "tiny", "price": 6.00},
-    {"id": "ring_smallish", "label": "Smallish", "css": "smallish", "price": 7.00},
     {"id": "ring_small", "label": "Small", "css": "small", "price": 8.00},
     {"id": "ring_medium", "label": "Medium", "css": "medium", "price": 9.00},
     {"id": "ring_big", "label": "Big", "css": "big", "price": 10.00},
@@ -283,7 +278,7 @@ if st.session_state.current_page == "next":
           <div class="cp-tag">Next page</div>
           <p class="cp-brand">More items</p>
           <p class="cp-sub">
-            Keycaps come in one size. Rings come in five sizes — tiny to big.
+            Keycaps come in one size. Rings come in small, medium, and big.
           </p>
         </div>
         """
