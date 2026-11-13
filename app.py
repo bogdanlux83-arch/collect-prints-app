@@ -136,6 +136,42 @@ st.markdown(
         font-size: 1rem !important;
         font-weight: 600 !important;
       }
+      .cp-glow-panel {
+        background: linear-gradient(160deg, #1c1917 0%, #7c2d12 55%, #ea580c 100%);
+        border-radius: 20px;
+        padding: 1.6rem 1.3rem 1.3rem;
+        color: #fff7ed;
+        min-height: 280px;
+        border: 2px solid #fdba74;
+        animation: cpGlow 2.2s ease-in-out infinite;
+        box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.55);
+      }
+      .cp-glow-panel h3 {
+        font-family: "Syne", sans-serif;
+        font-size: 1.55rem;
+        margin: 0 0 0.55rem 0;
+        color: #ffedd5;
+      }
+      .cp-glow-panel p {
+        margin: 0 0 1rem 0;
+        font-weight: 600;
+        line-height: 1.45;
+        color: #ffedd5;
+      }
+      @keyframes cpGlow {
+        0%, 100% {
+          box-shadow:
+            0 0 12px 2px rgba(251, 146, 60, 0.45),
+            0 0 28px 8px rgba(234, 88, 12, 0.25);
+          border-color: #fdba74;
+        }
+        50% {
+          box-shadow:
+            0 0 22px 6px rgba(253, 186, 116, 0.85),
+            0 0 48px 14px rgba(234, 88, 12, 0.45);
+          border-color: #ffedd5;
+        }
+      }
     </style>
     """,
     unsafe_allow_html=True,
@@ -181,8 +217,6 @@ if "stock" not in st.session_state:
         "spacebar_medium": 10,
         "spacebar_big": 10,
     }
-
-st.info("Looking for spacebars? Open **Spacebar Keycaps** in the sidebar.")
 
 st.markdown('<p class="cp-section">Account</p>', unsafe_allow_html=True)
 tab_login, tab_signup = st.tabs(["Login", "Signup"])
@@ -232,9 +266,10 @@ products = [
     },
 ]
 
-cols = st.columns(2)
-for i, p in enumerate(products):
-    with cols[i % 2]:
+shop_left, shop_right = st.columns([1.35, 1], gap="large")
+
+with shop_left:
+    for p in products:
         left = st.session_state.stock.get(p["id"], 0)
         st.markdown(
             f"""
@@ -262,6 +297,22 @@ for i, p in enumerate(products):
                 f"Added {p['name']} to cart ({st.session_state.stock[p['id']]} left)"
             )
             st.rerun()
+
+with shop_right:
+    st.markdown(
+        """
+        <div class="cp-glow-panel">
+          <h3>Spacebar Keycaps</h3>
+          <p>
+            Glowing portal → tiny, smallish, small, medium, big.
+            Press below to open the spacebar page.
+          </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    if st.button("Enter spacebar shop →", key="goto_spacebars", use_container_width=True):
+        st.switch_page("pages/1_Spacebar_Keycaps.py")
 
 st.markdown('<p class="cp-section">Your cart</p>', unsafe_allow_html=True)
 if not st.session_state.cart:
