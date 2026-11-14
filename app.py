@@ -1,11 +1,20 @@
+import base64
+from pathlib import Path
 from textwrap import dedent
 
 import streamlit as st
+
+LOGO_PATH = Path(__file__).parent / "assets" / "collect_prints_logo.jpg"
 
 
 def show_html(content: str) -> None:
     """Render HTML without Streamlit treating indented lines as code."""
     st.html(dedent(content).strip())
+
+
+def logo_data_uri() -> str:
+    encoded = base64.b64encode(LOGO_PATH.read_bytes()).decode("ascii")
+    return f"data:image/jpeg;base64,{encoded}"
 
 
 def stock_label(left: int) -> str:
@@ -27,7 +36,7 @@ def show_stock(left: int, out_message: str = "Out of stock") -> None:
 
 st.set_page_config(
     page_title="Collect Prints",
-    page_icon="🖨️",
+    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else "🖨️",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -89,6 +98,22 @@ show_html(
         padding: 2.8rem 2.2rem 2.3rem;
         margin-bottom: 1.6rem;
         box-shadow: 0 22px 50px rgba(194, 65, 12, 0.28);
+      }
+      .cp-hero-top {
+        display: flex;
+        align-items: center;
+        gap: 1.1rem;
+        margin-bottom: 0.85rem;
+      }
+      .cp-logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+        object-fit: cover;
+        border: 2px solid rgba(255, 237, 213, 0.55);
+        box-shadow: 0 10px 24px rgba(28, 25, 23, 0.28);
+        background: #fff7ed;
+        flex-shrink: 0;
       }
       .cp-brand {
         font-size: clamp(2.6rem, 5vw, 4rem);
@@ -345,9 +370,12 @@ SPACEBAR_KEYCAP = {
 # --- Next page ---
 if st.session_state.current_page == "next":
     show_html(
-        """
+        f"""
         <div class="cp-hero">
-          <div class="cp-tag">Next page</div>
+          <div class="cp-hero-top">
+            <img class="cp-logo" src="{logo_data_uri()}" alt="Collect Prints logo" />
+            <div class="cp-tag">Next page</div>
+          </div>
           <p class="cp-brand">More items</p>
           <p class="cp-sub">
             Spacebar keycaps — one each at £4. Rings in small, medium, and big.
@@ -450,9 +478,12 @@ if st.session_state.current_page == "next":
 
 # --- Home page ---
 show_html(
-    """
+    f"""
     <div class="cp-hero">
-      <div class="cp-tag">Resin shop</div>
+      <div class="cp-hero-top">
+        <img class="cp-logo" src="{logo_data_uri()}" alt="Collect Prints logo" />
+        <div class="cp-tag">Resin shop</div>
+      </div>
       <p class="cp-brand">Collect Prints</p>
       <p class="cp-sub">
         Custom resin keycaps and made-to-order commissions.
