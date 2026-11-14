@@ -36,26 +36,42 @@ show_html(
     """
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+      :root {
+        --cp-display: "Fraunces", Georgia, serif;
+        --cp-sans: "Sora", sans-serif;
+      }
+
+      /* Force nice type on Streamlit chrome + shop content */
       html, body, .stApp, [data-testid="stAppViewContainer"],
       [data-testid="stMarkdownContainer"], [data-testid="stWidgetLabel"],
-      .stTextInput input, .stTextArea textarea, [data-baseweb="tab"] {
-        font-family: "Manrope", sans-serif !important;
-        font-size: 18px;
+      [data-testid="stCaption"], [data-testid="stAlert"],
+      .stTextInput input, .stTextArea textarea, [data-baseweb="tab"],
+      [data-testid="stRadio"] label, [data-testid="stCheckbox"] label,
+      div[data-testid="stButton"] button, .stLinkButton a {
+        font-family: var(--cp-sans) !important;
       }
-      h1, h2, h3, .cp-brand, .cp-section, .cp-tag, .cp-price,
-      .cp-glow-panel h3, .size-chip .label {
-        font-family: "Bricolage Grotesque", sans-serif !important;
-        letter-spacing: -0.03em;
+
+      html, body, .stApp {
+        font-size: 17px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        color: #1c1917;
       }
+
+      .cp-brand, .cp-section {
+        font-family: var(--cp-display) !important;
+        font-optical-sizing: auto;
+      }
+
       .stApp {
         background:
           radial-gradient(1000px 520px at 8% -8%, #fdba74 0%, transparent 55%),
           radial-gradient(800px 420px at 95% 5%, #fb923c 0%, transparent 45%),
           radial-gradient(700px 380px at 50% 110%, #fed7aa 0%, transparent 50%),
           #fff7ed;
-        color: #1c1917;
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
@@ -65,9 +81,8 @@ show_html(
         padding-right: 2rem !important;
         max-width: 1280px;
       }
-      section.main > div {
-        max-width: 1280px;
-      }
+      section.main > div { max-width: 1280px; }
+
       .cp-hero {
         background: linear-gradient(125deg, #9a3412 0%, #c2410c 40%, #ea580c 75%, #fb923c 100%);
         border-radius: 22px;
@@ -76,102 +91,138 @@ show_html(
         box-shadow: 0 22px 50px rgba(194, 65, 12, 0.28);
       }
       .cp-brand {
-        font-size: 3.6rem;
+        font-size: clamp(2.6rem, 5vw, 4rem);
         font-weight: 800;
-        margin: 0 0 0.5rem 0;
-        line-height: 0.98;
+        margin: 0 0 0.55rem 0;
+        line-height: 0.95;
         color: #fff7ed;
-        letter-spacing: -0.045em;
+        letter-spacing: -0.04em;
+        font-variation-settings: "SOFT" 50, "WONK" 1;
       }
       .cp-tag {
         display: inline-block;
-        font-size: 0.82rem;
+        font-family: var(--cp-sans) !important;
+        font-size: 0.78rem;
         font-weight: 700;
-        letter-spacing: 0.16em;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
         background: #1c1917;
         color: #fdba74;
-        padding: 0.45rem 0.85rem;
+        padding: 0.48rem 0.9rem;
         border-radius: 999px;
         margin-bottom: 1rem;
       }
       .cp-sub {
         margin: 0;
-        font-size: 1.22rem;
-        max-width: 38rem;
-        line-height: 1.6;
+        font-family: var(--cp-sans) !important;
+        font-size: 1.18rem;
+        max-width: 36rem;
+        line-height: 1.65;
         color: #ffedd5;
-        font-weight: 500;
-        letter-spacing: -0.01em;
+        font-weight: 400;
+        letter-spacing: -0.015em;
       }
       .cp-note {
         background: #fff7ed;
         border: 2px solid #fb923c;
         color: #9a3412;
         border-radius: 14px;
-        padding: 1rem 1.15rem;
+        padding: 1rem 1.2rem;
         margin: 1rem 0 1.35rem;
-        font-size: 1.12rem;
-        font-weight: 600;
+        font-family: var(--cp-sans) !important;
+        font-size: 1.05rem;
+        font-weight: 500;
+        line-height: 1.55;
+        letter-spacing: -0.01em;
       }
-      .cp-note strong { color: #7c2d12; }
+      .cp-note strong {
+        color: #7c2d12;
+        font-weight: 700;
+      }
       .cp-card {
         background: #ffffff;
         border: 2px solid #fdba74;
         border-radius: 18px;
-        padding: 1.35rem 1.35rem 0.5rem;
+        padding: 1.35rem 1.35rem 0.55rem;
         margin-bottom: 1rem;
         box-shadow: 0 10px 28px rgba(234, 88, 12, 0.12);
       }
       .cp-card h3 {
+        font-family: var(--cp-display) !important;
         color: #0c0a09;
-        margin: 0 0 0.45rem 0;
+        margin: 0 0 0.4rem 0;
         font-size: 1.55rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
       }
       .cp-card p {
-        color: #44403c;
-        font-weight: 600;
+        font-family: var(--cp-sans) !important;
+        color: #57534e;
+        font-weight: 400;
         margin: 0 0 0.45rem 0;
-        font-size: 1.08rem;
-        line-height: 1.5;
+        font-size: 1.02rem;
+        line-height: 1.55;
+        letter-spacing: -0.01em;
       }
       .cp-price {
+        font-family: var(--cp-display) !important;
         color: #ea580c;
         font-weight: 800;
-        font-size: 1.35rem;
+        font-size: 1.4rem;
+        letter-spacing: -0.03em;
       }
       .cp-section {
-        font-size: 1.95rem;
-        font-weight: 800;
-        margin: 1.8rem 0 0.9rem;
+        font-size: clamp(1.7rem, 3vw, 2.15rem);
+        font-weight: 700;
+        margin: 1.9rem 0 0.95rem;
         color: #9a3412;
         letter-spacing: -0.035em;
+        line-height: 1.1;
       }
       .cp-footer {
         text-align: center;
         color: #7c2d12;
-        font-size: 1.05rem;
+        font-family: var(--cp-sans) !important;
+        font-size: 0.98rem;
         margin-top: 2.8rem;
         padding-top: 1.4rem;
         border-top: 2px solid #fdba74;
-        font-weight: 600;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        line-height: 1.6;
       }
+
       div[data-testid="stButton"] button {
-        border-radius: 12px !important;
-        font-family: "Manrope", sans-serif !important;
-        font-weight: 700 !important;
-        font-size: 1.05rem !important;
-        padding: 0.55rem 1.1rem !important;
-        letter-spacing: -0.01em !important;
+        border-radius: 14px !important;
+        font-weight: 650 !important;
+        font-size: 1.02rem !important;
+        padding: 0.62rem 1.15rem !important;
+        letter-spacing: -0.015em !important;
       }
       [data-testid="stCaption"] {
-        font-size: 1rem !important;
-        font-weight: 600 !important;
+        font-size: 0.98rem !important;
+        font-weight: 500 !important;
+        letter-spacing: -0.01em !important;
       }
+      [data-testid="stAlert"] p,
+      [data-testid="stMarkdownContainer"] p {
+        font-family: var(--cp-sans) !important;
+        letter-spacing: -0.01em;
+      }
+      [data-baseweb="tab"] {
+        font-weight: 600 !important;
+        letter-spacing: -0.015em !important;
+      }
+      label, [data-testid="stWidgetLabel"] p {
+        font-weight: 600 !important;
+        letter-spacing: -0.015em !important;
+      }
+
       .cp-glow-panel {
         background: linear-gradient(160deg, #1c1917 0%, #7c2d12 55%, #ea580c 100%);
         border-radius: 20px;
-        padding: 1.6rem 1.3rem 1.3rem;
+        padding: 1.7rem 1.35rem 1.35rem;
         color: #fff7ed;
         min-height: 280px;
         border: 2px solid #fdba74;
@@ -179,16 +230,22 @@ show_html(
         box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.55);
       }
       .cp-glow-panel h3 {
-        font-size: 1.6rem;
-        margin: 0 0 0.55rem 0;
+        font-family: var(--cp-display) !important;
+        font-size: 1.7rem;
+        font-weight: 700;
+        margin: 0 0 0.6rem 0;
         color: #ffedd5;
         letter-spacing: -0.03em;
+        line-height: 1.1;
       }
       .cp-glow-panel p {
+        font-family: var(--cp-sans) !important;
         margin: 0 0 1rem 0;
-        font-weight: 600;
-        line-height: 1.45;
+        font-weight: 400;
+        line-height: 1.55;
         color: #ffedd5;
+        font-size: 1.05rem;
+        letter-spacing: -0.01em;
       }
       @keyframes cpGlow {
         0%, 100% {
@@ -208,7 +265,8 @@ show_html(
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 0.75rem;
+        align-items: flex-end;
+        gap: 0.85rem;
         margin: 1.2rem 0 1.5rem;
       }
       .size-chip {
@@ -216,7 +274,6 @@ show_html(
         background: #fff7ed;
         border: 2px solid #fb923c;
         border-radius: 999px;
-        font-weight: 700;
         color: #7c2d12;
         box-shadow: 0 8px 18px rgba(234, 88, 12, 0.12);
         display: flex;
@@ -224,11 +281,23 @@ show_html(
         align-items: center;
         justify-content: center;
       }
-      .size-chip.small { width: 5.5rem; height: 5.5rem; font-size: 0.9rem; }
-      .size-chip.medium { width: 7.2rem; height: 7.2rem; font-size: 1rem; }
-      .size-chip.big { width: 9rem; height: 9rem; font-size: 1.1rem; }
-      .size-chip .label { font-weight: 700; letter-spacing: -0.02em; }
-      .size-chip .meta { font-family: "Manrope", sans-serif; font-size: 0.78em; font-weight: 600; color: #9a3412; margin-top: 0.2rem; }
+      .size-chip.small { width: 5.5rem; height: 5.5rem; }
+      .size-chip.medium { width: 7.2rem; height: 7.2rem; }
+      .size-chip.big { width: 9rem; height: 9rem; }
+      .size-chip .label {
+        font-family: var(--cp-display) !important;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        font-size: 1.05em;
+      }
+      .size-chip .meta {
+        font-family: var(--cp-sans) !important;
+        font-size: 0.72em;
+        font-weight: 500;
+        color: #9a3412;
+        margin-top: 0.2rem;
+        letter-spacing: -0.01em;
+      }
     </style>
     """
 )
