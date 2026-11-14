@@ -4,7 +4,7 @@ from textwrap import dedent
 
 import streamlit as st
 
-LOGO_PATH = Path(__file__).parent / "assets" / "collect_prints_logo.jpg"
+LOGO_PATH = (Path(__file__).resolve().parent / "assets" / "collect_prints_logo.jpg")
 
 
 def show_html(content: str) -> None:
@@ -12,9 +12,18 @@ def show_html(content: str) -> None:
     st.html(dedent(content).strip())
 
 
-def logo_data_uri() -> str:
+def logo_data_uri() -> str | None:
+    if not LOGO_PATH.is_file():
+        return None
     encoded = base64.b64encode(LOGO_PATH.read_bytes()).decode("ascii")
     return f"data:image/jpeg;base64,{encoded}"
+
+
+def hero_logo_html() -> str:
+    uri = logo_data_uri()
+    if not uri:
+        return ""
+    return f'<img class="cp-logo" src="{uri}" alt="Collect Prints logo" />'
 
 
 def stock_label(left: int) -> str:
@@ -34,9 +43,13 @@ def show_stock(left: int, out_message: str = "Out of stock") -> None:
         st.caption(stock_label(left))
 
 
+_page_icon = "🖨️"
+if LOGO_PATH.is_file():
+    _page_icon = str(LOGO_PATH)
+
 st.set_page_config(
     page_title="Collect Prints",
-    page_icon=str(LOGO_PATH) if LOGO_PATH.exists() else "🖨️",
+    page_icon=_page_icon,
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -373,7 +386,7 @@ if st.session_state.current_page == "next":
         f"""
         <div class="cp-hero">
           <div class="cp-hero-top">
-            <img class="cp-logo" src="{logo_data_uri()}" alt="Collect Prints logo" />
+            {hero_logo_html()}
             <div class="cp-tag">Next page</div>
           </div>
           <p class="cp-brand">More items</p>
@@ -481,7 +494,7 @@ show_html(
     f"""
     <div class="cp-hero">
       <div class="cp-hero-top">
-        <img class="cp-logo" src="{logo_data_uri()}" alt="Collect Prints logo" />
+        {hero_logo_html()}
         <div class="cp-tag">Resin shop</div>
       </div>
       <p class="cp-brand">Collect Prints</p>
