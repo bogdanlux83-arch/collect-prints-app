@@ -328,15 +328,6 @@ else:
         "ring_big": 10,
     }.items():
         st.session_state.stock.setdefault(key, qty)
-    if st.session_state.stock.get("commission", 0) < 15:
-        st.session_state.stock["commission"] = 15
-    if "rings_stock_v3" not in st.session_state:
-        for ring_id in ("ring_small", "ring_medium", "ring_big"):
-            st.session_state.stock[ring_id] = 10
-        st.session_state.rings_stock_v3 = True
-    if "spacebar_stock_v1" not in st.session_state:
-        st.session_state.stock["spacebar_keycap"] = 20
-        st.session_state.spacebar_stock_v1 = True
 
 RING_SIZES = [
     {"id": "ring_small", "label": "Small", "css": "small", "price": 8.00},
