@@ -36,15 +36,18 @@ show_html(
     """
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-      html, body, .stApp, [data-testid="stAppViewContainer"] {
-        font-family: "Figtree", sans-serif;
+      html, body, .stApp, [data-testid="stAppViewContainer"],
+      [data-testid="stMarkdownContainer"], [data-testid="stWidgetLabel"],
+      .stTextInput input, .stTextArea textarea, [data-baseweb="tab"] {
+        font-family: "Manrope", sans-serif !important;
         font-size: 18px;
       }
-      h1, h2, h3, .cp-brand, .cp-section {
-        font-family: "Syne", sans-serif !important;
-        letter-spacing: -0.02em;
+      h1, h2, h3, .cp-brand, .cp-section, .cp-tag, .cp-price,
+      .cp-glow-panel h3, .size-chip .label {
+        font-family: "Bricolage Grotesque", sans-serif !important;
+        letter-spacing: -0.03em;
       }
       .stApp {
         background:
@@ -73,17 +76,18 @@ show_html(
         box-shadow: 0 22px 50px rgba(194, 65, 12, 0.28);
       }
       .cp-brand {
-        font-size: 3.4rem;
+        font-size: 3.6rem;
         font-weight: 800;
         margin: 0 0 0.5rem 0;
-        line-height: 1.02;
+        line-height: 0.98;
         color: #fff7ed;
+        letter-spacing: -0.045em;
       }
       .cp-tag {
         display: inline-block;
-        font-size: 0.9rem;
+        font-size: 0.82rem;
         font-weight: 700;
-        letter-spacing: 0.14em;
+        letter-spacing: 0.16em;
         text-transform: uppercase;
         background: #1c1917;
         color: #fdba74;
@@ -93,11 +97,12 @@ show_html(
       }
       .cp-sub {
         margin: 0;
-        font-size: 1.28rem;
+        font-size: 1.22rem;
         max-width: 38rem;
-        line-height: 1.55;
+        line-height: 1.6;
         color: #ffedd5;
-        font-weight: 600;
+        font-weight: 500;
+        letter-spacing: -0.01em;
       }
       .cp-note {
         background: #fff7ed;
@@ -136,10 +141,11 @@ show_html(
         font-size: 1.35rem;
       }
       .cp-section {
-        font-size: 1.85rem;
+        font-size: 1.95rem;
         font-weight: 800;
         margin: 1.8rem 0 0.9rem;
         color: #9a3412;
+        letter-spacing: -0.035em;
       }
       .cp-footer {
         text-align: center;
@@ -152,10 +158,11 @@ show_html(
       }
       div[data-testid="stButton"] button {
         border-radius: 12px !important;
-        font-family: "Figtree", sans-serif !important;
+        font-family: "Manrope", sans-serif !important;
         font-weight: 700 !important;
         font-size: 1.05rem !important;
         padding: 0.55rem 1.1rem !important;
+        letter-spacing: -0.01em !important;
       }
       [data-testid="stCaption"] {
         font-size: 1rem !important;
@@ -172,10 +179,10 @@ show_html(
         box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.55);
       }
       .cp-glow-panel h3 {
-        font-family: "Syne", sans-serif;
-        font-size: 1.55rem;
+        font-size: 1.6rem;
         margin: 0 0 0.55rem 0;
         color: #ffedd5;
+        letter-spacing: -0.03em;
       }
       .cp-glow-panel p {
         margin: 0 0 1rem 0;
@@ -220,8 +227,8 @@ show_html(
       .size-chip.small { width: 5.5rem; height: 5.5rem; font-size: 0.9rem; }
       .size-chip.medium { width: 7.2rem; height: 7.2rem; font-size: 1rem; }
       .size-chip.big { width: 9rem; height: 9rem; font-size: 1.1rem; }
-      .size-chip .label { font-family: "Syne", sans-serif; }
-      .size-chip .meta { font-size: 0.78em; font-weight: 600; color: #9a3412; margin-top: 0.2rem; }
+      .size-chip .label { font-weight: 700; letter-spacing: -0.02em; }
+      .size-chip .meta { font-family: "Manrope", sans-serif; font-size: 0.78em; font-weight: 600; color: #9a3412; margin-top: 0.2rem; }
     </style>
     """
 )
