@@ -238,6 +238,7 @@ if "stock" not in st.session_state:
     st.session_state.stock = {
         "keycaps": 40,
         "commission": 15,
+        "spacebar_keycap": 20,
         "ring_small": 10,
         "ring_medium": 10,
         "ring_big": 10,
@@ -245,6 +246,7 @@ if "stock" not in st.session_state:
 else:
     for key, qty in {
         "commission": 15,
+        "spacebar_keycap": 20,
         "ring_small": 10,
         "ring_medium": 10,
         "ring_big": 10,
@@ -256,6 +258,9 @@ else:
         for ring_id in ("ring_small", "ring_medium", "ring_big"):
             st.session_state.stock[ring_id] = 10
         st.session_state.rings_stock_v3 = True
+    if "spacebar_stock_v1" not in st.session_state:
+        st.session_state.stock["spacebar_keycap"] = 20
+        st.session_state.spacebar_stock_v1 = True
 
 RING_SIZES = [
     {"id": "ring_small", "label": "Small", "css": "small", "price": 8.00},
@@ -263,11 +268,11 @@ RING_SIZES = [
     {"id": "ring_big", "label": "Big", "css": "big", "price": 10.00},
 ]
 
-KEYCAP_ONE_SIZE = {
-    "id": "keycaps",
-    "name": "Resin Keycap",
-    "price": 8.00,
-    "desc": "One standard size. Add colour/legend details in cart notes on the home page.",
+SPACEBAR_KEYCAP = {
+    "id": "spacebar_keycap",
+    "name": "Spacebar Keycap",
+    "price": 4.00,
+    "desc": "One spacebar keycap. Add colour/legend details in cart notes on the home page.",
 }
 
 # --- Next page ---
@@ -278,7 +283,7 @@ if st.session_state.current_page == "next":
           <div class="cp-tag">Next page</div>
           <p class="cp-brand">More items</p>
           <p class="cp-sub">
-            Keycaps come in one size. Rings come in small, medium, and big.
+            Spacebar keycaps — one each at £4. Rings in small, medium, and big.
           </p>
         </div>
         """
@@ -288,32 +293,32 @@ if st.session_state.current_page == "next":
         st.session_state.current_page = "home"
         st.rerun()
 
-    show_html('<p class="cp-section">Keycaps — one size</p>')
-    keycap_left = st.session_state.stock.get(KEYCAP_ONE_SIZE["id"], 0)
+    show_html('<p class="cp-section">Spacebar keycaps</p>')
+    spacebar_left = st.session_state.stock.get(SPACEBAR_KEYCAP["id"], 0)
     show_html(
         f"""
         <div class="cp-card">
           <h3 style="margin:0 0 0.35rem 0;">
-            {KEYCAP_ONE_SIZE['name']}
-            <span class="cp-price">£{KEYCAP_ONE_SIZE['price']:.2f}</span>
+            {SPACEBAR_KEYCAP['name']}
+            <span class="cp-price">£{SPACEBAR_KEYCAP['price']:.2f}</span>
           </h3>
           <p style="margin:0; color:#292524; font-weight:500;">
-            {KEYCAP_ONE_SIZE['desc']}
+            {SPACEBAR_KEYCAP['desc']}
           </p>
         </div>
         """
     )
-    show_stock(keycap_left)
+    show_stock(spacebar_left)
     if st.button(
-        "Add keycap to cart",
-        disabled=keycap_left <= 0,
-        key="add_keycap_next",
+        "Add spacebar keycap to cart",
+        disabled=spacebar_left <= 0,
+        key="add_spacebar_next",
     ):
-        st.session_state.cart.append(KEYCAP_ONE_SIZE)
-        st.session_state.stock[KEYCAP_ONE_SIZE["id"]] -= 1
-        left_now = st.session_state.stock[KEYCAP_ONE_SIZE["id"]]
+        st.session_state.cart.append(SPACEBAR_KEYCAP)
+        st.session_state.stock[SPACEBAR_KEYCAP["id"]] -= 1
+        left_now = st.session_state.stock[SPACEBAR_KEYCAP["id"]]
         st.success(
-            f"Added {KEYCAP_ONE_SIZE['name']} to cart — {stock_label(left_now)}"
+            f"Added {SPACEBAR_KEYCAP['name']} to cart — {stock_label(left_now)}"
         )
         st.rerun()
 
