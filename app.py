@@ -231,12 +231,31 @@ show_html(
         line-height: 1.6;
       }
 
-      div[data-testid="stButton"] button {
+      div[data-testid="stButton"] button,
+      .stLinkButton a {
         border-radius: 14px !important;
-        font-weight: 650 !important;
-        font-size: 1.02rem !important;
-        padding: 0.62rem 1.15rem !important;
+        font-weight: 700 !important;
+        font-size: 1.05rem !important;
+        padding: 0.68rem 1.2rem !important;
         letter-spacing: -0.015em !important;
+        background: rgba(255, 247, 237, 0.55) !important;
+        color: #7c2d12 !important;
+        border: 2px solid rgba(194, 65, 12, 0.75) !important;
+        box-shadow: 0 6px 18px rgba(194, 65, 12, 0.18) !important;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      div[data-testid="stButton"] button:hover,
+      .stLinkButton a:hover {
+        background: rgba(254, 215, 170, 0.72) !important;
+        border-color: #c2410c !important;
+        color: #431407 !important;
+      }
+      div[data-testid="stButton"] button:disabled {
+        background: rgba(255, 247, 237, 0.28) !important;
+        border-color: rgba(168, 162, 158, 0.55) !important;
+        color: rgba(120, 113, 108, 0.85) !important;
+        box-shadow: none !important;
       }
       [data-testid="stCaption"] {
         font-size: 0.98rem !important;
