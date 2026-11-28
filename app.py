@@ -58,11 +58,16 @@ show_html(
     """
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;600&display=swap" rel="stylesheet">
     <style>
       :root {
-        --cp-display: "Fraunces", Georgia, serif;
-        --cp-sans: "Sora", sans-serif;
+        --cp-display: "Source Serif 4", Georgia, serif;
+        --cp-sans: "Source Sans 3", sans-serif;
+        --cp-ink: #2a2724;
+        --cp-muted: #6b645c;
+        --cp-line: #e3ddd6;
+        --cp-paper: #f7f5f2;
+        --cp-accent: #5c534c;
       }
 
       /* Force nice type on Streamlit chrome + shop content */
@@ -76,11 +81,11 @@ show_html(
       }
 
       html, body, .stApp {
-        font-size: 17px;
+        font-size: 16px;
         line-height: 1.55;
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
-        color: #1c1917;
+        color: var(--cp-ink);
       }
 
       .cp-brand, .cp-section {
@@ -89,11 +94,7 @@ show_html(
       }
 
       .stApp {
-        background:
-          radial-gradient(1000px 520px at 8% -8%, #c4b5fd 0%, transparent 55%),
-          radial-gradient(800px 420px at 95% 5%, #93c5fd 0%, transparent 45%),
-          radial-gradient(700px 380px at 50% 110%, #ddd6fe 0%, transparent 50%),
-          #f5f3ff;
+        background: var(--cp-paper);
       }
       #MainMenu, footer, header { visibility: hidden; }
       .block-container {
@@ -106,155 +107,141 @@ show_html(
       section.main > div { max-width: 1280px; }
 
       .cp-hero {
-        background: linear-gradient(125deg, #312e81 0%, #4c1d95 35%, #6366f1 70%, #818cf8 100%);
-        border-radius: 22px;
-        padding: 2.8rem 2.2rem 2.3rem;
-        margin-bottom: 1.6rem;
-        box-shadow: 0 22px 50px rgba(79, 70, 229, 0.28);
+        background: #fff;
+        border: 1px solid var(--cp-line);
+        border-radius: 8px;
+        padding: 1.5rem 1.4rem 1.35rem;
+        margin-bottom: 1.4rem;
       }
       .cp-hero-top {
         display: flex;
         align-items: center;
-        gap: 1.1rem;
-        margin-bottom: 0.85rem;
+        gap: 0.85rem;
+        margin-bottom: 0.55rem;
       }
       .cp-logo {
-        width: 72px;
-        height: 72px;
-        border-radius: 18px;
+        width: 48px;
+        height: 48px;
+        border-radius: 6px;
         object-fit: cover;
-        border: 2px solid rgba(224, 231, 255, 0.55);
-        box-shadow: 0 10px 24px rgba(30, 27, 75, 0.28);
-        background: #eef2ff;
+        border: 1px solid var(--cp-line);
+        background: #fff;
         flex-shrink: 0;
       }
       .cp-brand {
-        font-size: clamp(2.6rem, 5vw, 4rem);
-        font-weight: 800;
-        margin: 0 0 0.55rem 0;
-        line-height: 0.95;
-        color: #eef2ff;
-        letter-spacing: -0.04em;
-        font-variation-settings: "SOFT" 50, "WONK" 1;
+        font-size: clamp(1.7rem, 3vw, 2.15rem);
+        font-weight: 600;
+        margin: 0 0 0.35rem 0;
+        line-height: 1.15;
+        color: var(--cp-ink);
+        letter-spacing: -0.02em;
       }
       .cp-tag {
         display: inline-block;
         font-family: var(--cp-sans) !important;
         font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.18em;
+        font-weight: 500;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
-        background: #1e1b4b;
-        color: #c4b5fd;
-        padding: 0.48rem 0.9rem;
-        border-radius: 999px;
-        margin-bottom: 1rem;
+        color: var(--cp-muted);
+        margin: 0 0 0.35rem;
       }
       .cp-sub {
         margin: 0;
         font-family: var(--cp-sans) !important;
-        font-size: 1.18rem;
+        font-size: 1rem;
         max-width: 36rem;
-        line-height: 1.65;
-        color: #e0e7ff;
+        line-height: 1.6;
+        color: var(--cp-muted);
         font-weight: 400;
-        letter-spacing: -0.015em;
       }
       .cp-note {
-        background: #eef2ff;
-        border: 2px solid #a5b4fc;
-        color: #3730a3;
-        border-radius: 14px;
-        padding: 1rem 1.2rem;
-        margin: 1rem 0 1.35rem;
+        background: #fff;
+        border: 1px solid var(--cp-line);
+        color: var(--cp-ink);
+        border-radius: 8px;
+        padding: 0.85rem 1rem;
+        margin: 0.8rem 0 1.2rem;
         font-family: var(--cp-sans) !important;
-        font-size: 1.05rem;
-        font-weight: 500;
+        font-size: 0.98rem;
+        font-weight: 400;
         line-height: 1.55;
-        letter-spacing: -0.01em;
       }
       .cp-note strong {
-        color: #312e81;
-        font-weight: 700;
+        color: var(--cp-ink);
+        font-weight: 600;
       }
       .cp-card {
-        background: #ffffff;
-        border: 2px solid #a5b4fc;
-        border-radius: 18px;
-        padding: 1.35rem 1.35rem 0.55rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 10px 28px rgba(99, 102, 241, 0.12);
+        background: #fff;
+        border: 1px solid var(--cp-line);
+        border-radius: 8px;
+        padding: 1.1rem 1.1rem 0.45rem;
+        margin-bottom: 0.85rem;
       }
       .cp-card h3 {
         font-family: var(--cp-display) !important;
-        color: #0c0a09;
-        margin: 0 0 0.4rem 0;
-        font-size: 1.55rem;
-        font-weight: 700;
-        letter-spacing: -0.03em;
-        line-height: 1.15;
+        color: var(--cp-ink);
+        margin: 0 0 0.35rem 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        line-height: 1.25;
       }
       .cp-card p {
         font-family: var(--cp-sans) !important;
-        color: #57534e;
+        color: var(--cp-muted);
         font-weight: 400;
-        margin: 0 0 0.45rem 0;
-        font-size: 1.02rem;
+        margin: 0 0 0.4rem 0;
+        font-size: 0.98rem;
         line-height: 1.55;
-        letter-spacing: -0.01em;
       }
       .cp-price {
-        font-family: var(--cp-display) !important;
-        color: #4f46e5;
-        font-weight: 800;
-        font-size: 1.4rem;
-        letter-spacing: -0.03em;
+        font-family: var(--cp-sans) !important;
+        color: var(--cp-ink);
+        font-weight: 600;
+        font-size: 1.05rem;
       }
       .cp-section {
-        font-size: clamp(1.7rem, 3vw, 2.15rem);
-        font-weight: 700;
-        margin: 1.9rem 0 0.95rem;
-        color: #4338ca;
-        letter-spacing: -0.035em;
-        line-height: 1.1;
+        font-size: 1.35rem;
+        font-weight: 600;
+        margin: 1.6rem 0 0.75rem;
+        color: var(--cp-ink);
+        letter-spacing: -0.02em;
+        line-height: 1.2;
       }
       .cp-footer {
         text-align: center;
-        color: #4338ca;
+        color: var(--cp-muted);
         font-family: var(--cp-sans) !important;
-        font-size: 0.98rem;
-        margin-top: 2.8rem;
-        padding-top: 1.4rem;
-        border-top: 2px solid #a5b4fc;
-        font-weight: 500;
-        letter-spacing: -0.01em;
+        font-size: 0.92rem;
+        margin-top: 2.4rem;
+        padding-top: 1.1rem;
+        border-top: 1px solid var(--cp-line);
+        font-weight: 400;
         line-height: 1.6;
       }
 
       div[data-testid="stButton"] button,
       .stLinkButton a {
-        border-radius: 14px !important;
-        font-weight: 700 !important;
-        font-size: 1.05rem !important;
-        padding: 0.68rem 1.2rem !important;
-        letter-spacing: -0.015em !important;
-        background: rgba(238, 242, 255, 0.6) !important;
-        color: #3730a3 !important;
-        border: 2px solid rgba(79, 70, 229, 0.7) !important;
-        box-shadow: 0 6px 18px rgba(79, 70, 229, 0.16) !important;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+        font-size: 0.95rem !important;
+        padding: 0.5rem 0.95rem !important;
+        background: #fff !important;
+        color: var(--cp-ink) !important;
+        border: 1px solid #cfc8c0 !important;
+        box-shadow: none !important;
       }
       div[data-testid="stButton"] button:hover,
       .stLinkButton a:hover {
-        background: rgba(199, 210, 254, 0.78) !important;
-        border-color: #4f46e5 !important;
-        color: #1e1b4b !important;
+        background: #f3f0ec !important;
+        border-color: var(--cp-accent) !important;
+        color: var(--cp-ink) !important;
       }
       div[data-testid="stButton"] button:disabled {
-        background: rgba(238, 242, 255, 0.28) !important;
-        border-color: rgba(168, 162, 158, 0.55) !important;
-        color: rgba(120, 113, 108, 0.85) !important;
+        background: #f3f0ec !important;
+        border-color: var(--cp-line) !important;
+        color: #a39c95 !important;
         box-shadow: none !important;
       }
       [data-testid="stCaption"] {
@@ -277,83 +264,63 @@ show_html(
       }
 
       .cp-glow-panel {
-        background: linear-gradient(160deg, #1e1b4b 0%, #4c1d95 50%, #6366f1 100%);
-        border-radius: 20px;
-        padding: 1.7rem 1.35rem 1.35rem;
-        color: #eef2ff;
-        min-height: 280px;
-        border: 2px solid #a5b4fc;
-        animation: cpGlow 2.2s ease-in-out infinite;
-        box-shadow: 0 0 0 0 rgba(129, 140, 248, 0.55);
+        background: #fff;
+        border-radius: 8px;
+        padding: 1.2rem 1.15rem 1.05rem;
+        color: var(--cp-ink);
+        min-height: 220px;
+        border: 1px solid var(--cp-line);
       }
       .cp-glow-panel h3 {
         font-family: var(--cp-display) !important;
-        font-size: 1.7rem;
-        font-weight: 700;
-        margin: 0 0 0.6rem 0;
-        color: #e0e7ff;
-        letter-spacing: -0.03em;
-        line-height: 1.1;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0 0 0.45rem 0;
+        color: var(--cp-ink);
+        letter-spacing: -0.015em;
+        line-height: 1.2;
       }
       .cp-glow-panel p {
         font-family: var(--cp-sans) !important;
-        margin: 0 0 1rem 0;
+        margin: 0 0 0.75rem 0;
         font-weight: 400;
         line-height: 1.55;
-        color: #e0e7ff;
-        font-size: 1.05rem;
-        letter-spacing: -0.01em;
-      }
-      @keyframes cpGlow {
-        0%, 100% {
-          box-shadow:
-            0 0 12px 2px rgba(129, 140, 248, 0.45),
-            0 0 28px 8px rgba(99, 102, 241, 0.25);
-          border-color: #a5b4fc;
-        }
-        50% {
-          box-shadow:
-            0 0 22px 6px rgba(196, 181, 253, 0.85),
-            0 0 48px 14px rgba(99, 102, 241, 0.45);
-          border-color: #e0e7ff;
-        }
+        color: var(--cp-muted);
+        font-size: 0.98rem;
       }
       .size-ring {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: flex-end;
-        gap: 0.85rem;
-        margin: 1.2rem 0 1.5rem;
+        gap: 0.7rem;
+        margin: 0.9rem 0 1.2rem;
       }
       .size-chip {
         text-align: center;
-        background: #eef2ff;
-        border: 2px solid #818cf8;
-        border-radius: 999px;
-        color: #3730a3;
-        box-shadow: 0 8px 18px rgba(99, 102, 241, 0.12);
+        background: #fff;
+        border: 1px solid var(--cp-line);
+        border-radius: 8px;
+        color: var(--cp-ink);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
       }
-      .size-chip.small { width: 5.5rem; height: 5.5rem; }
-      .size-chip.medium { width: 7.2rem; height: 7.2rem; }
-      .size-chip.big { width: 9rem; height: 9rem; }
+      .size-chip.small { width: 5.2rem; height: 5.2rem; }
+      .size-chip.medium { width: 6.2rem; height: 6.2rem; }
+      .size-chip.big { width: 7.2rem; height: 7.2rem; }
       .size-chip .label {
-        font-family: var(--cp-display) !important;
-        font-weight: 700;
-        letter-spacing: -0.03em;
-        font-size: 1.05em;
+        font-family: var(--cp-sans) !important;
+        font-weight: 600;
+        font-size: 0.95em;
       }
       .size-chip .meta {
         font-family: var(--cp-sans) !important;
         font-size: 0.72em;
-        font-weight: 500;
-        color: #4338ca;
+        font-weight: 400;
+        color: var(--cp-muted);
         margin-top: 0.2rem;
-        letter-spacing: -0.01em;
       }
     </style>
     """
